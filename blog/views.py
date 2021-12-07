@@ -5,6 +5,7 @@ from django.views.generic import (
 )
 from .models import Post
 from .forms import PostForm
+from django.http import HttpResponseRedirect
 
 def home(request):
     context={
@@ -31,8 +32,13 @@ def postCreate(request):
         post = postForm.save(commit=False)
         post.author = request.user
         post.save()
-        return redirect("blog:blog-home")
-    
+        print("Post ID")
+        print(post.id)
+        print("LAST")
+        #HttpResponseRedirect('blog:blog-home-post'%post.id)
+        return HttpResponseRedirect(reverse('blog:blog-home-post', args=(post.id,)))
+        #return redirect("'blog:blog-home-post' post.id")
+        #return reverse('blog:blog-home-post', args=(post.id,))
     return render(request,"blog/post_form.html",{"postForm":postForm})
 
 
