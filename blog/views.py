@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect,reverse
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
 from django.views.generic import (
                                 ListView ,
                                 DetailView ,
-                                UpdateView,
+                                DeleteView,
                                 
 )
 from .models import Post
@@ -78,8 +79,15 @@ def postUpdate(request,id,pk):
     return render(request,"blog/post_form.html",{"postForm":postForm})
 
 
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    success_url= '/'
 
-
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 def about(request):
     return render(request, 'blog/about.html',{'title':'About'})
