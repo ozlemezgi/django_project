@@ -1,7 +1,12 @@
 from django.shortcuts import render,redirect,reverse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+
 from django.views.generic import (
                                 ListView ,
-                                DetailView 
+                                DetailView ,
+                                UpdateView,
+                                
 )
 from .models import Post
 from .forms import PostForm
@@ -23,7 +28,7 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
 
-
+@login_required(login_url='/login/')
 def postCreate(request):
     postForm=PostForm(request.POST or None,request.FILES or None)
 
@@ -42,6 +47,8 @@ def postCreate(request):
     return render(request,"blog/post_form.html",{"postForm":postForm})
 
 
+
+
 #class PostCreateView(CreateView):
    #model = Post
    #fields = ['title','content']
@@ -54,6 +61,25 @@ def postCreate(request):
 
    #def get_absolute_url(self):
        #return redirect('blog:blog-home')
-       
+
+#login_required(login_url = "user:login")
+def postUpdate(request,id,pk):
+    post = get_object_or_404(Post,id = id,author = request.user,pk=pk,)
+
+    postForm = PostForm(request.POST or None,request.FILES or None,instance=post,)
+    if postForm.is_valid() :
+        post = postForm.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect(reverse("blog:blog-home-post" , args=(post.id,)))
+    context = {
+        "post":postForm,   } 
+
+    return render(request,"blog/post_form.html",{"postForm":postForm})
+
+
+
+
+
 def about(request):
     return render(request, 'blog/about.html',{'title':'About'})

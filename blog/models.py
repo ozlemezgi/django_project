@@ -15,10 +15,3 @@ class Post(models.Model):
 
   #  def get_absolute_url(self):
   #      return reverse("blog:blog-home-post",kwargs={"pk":self.pk})    
-
-       
-
-
-
-
-
