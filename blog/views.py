@@ -63,20 +63,20 @@ def postCreate(request):
    #def get_absolute_url(self):
        #return redirect('blog:blog-home')
 
-#login_required(login_url = "user:login")
-def postUpdate(request,id,pk):
-    post = get_object_or_404(Post,id = id,author = request.user,pk=pk,)
+@login_required(login_url = "/login/")
+def postUpdate(request,pk):
+    post = get_object_or_404(Post,pk=pk,author = request.user)
 
-    postForm = PostForm(request.POST or None,request.FILES or None,instance=post,)
+    postForm = PostForm(request.POST or None,request.FILES or None,instance=post)
     if postForm.is_valid() :
         post = postForm.save(commit=False)
         post.author = request.user
         post.save()
-        return redirect(reverse("blog:blog-home-post" , args=(post.id,)))
+        return redirect(reverse("blog:blog-home-post" , args=(post.pk,)))
     context = {
-        "post":postForm,   } 
+        "postForm":postForm,   } 
 
-    return render(request,"blog/post_form.html",{"postForm":postForm})
+    return render(request,"blog/post_update.html",context)
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
