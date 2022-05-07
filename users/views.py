@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm,UserUpdateForm,ProfileUpdateForm
+from .models import Profile
+#from .forms import InformationForm
 
 def register(request):
     if request.method == 'POST':
@@ -37,3 +39,15 @@ def profile(request):
         'p_form':p_form
     }
    return render (request, 'users/profile.html', context)
+
+
+
+
+# @login_required(login_url='/login/')
+# def information(request,id):
+#     form = InformationForm(request.POST or None,request.FILES or None)
+#     if form.is_valid():
+#         us = form.save()
+#         us.user_id = id   
+#         return redirect('blog-home')
+#     return HttpResponseRedirect(reverse('information', args=(id,)))

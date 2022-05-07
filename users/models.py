@@ -4,8 +4,28 @@ from PIL import Image
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    GENDER_CHOICES = (('M', 'Male'),('F', 'Female'))
+    CITIES=(('nicosia','nicosia'),('famagusta','famagusta'),('kyrenia','kyrenia'),('omorfo','omorfo'),('lefka','lefka'))
+    PETS=(('petsareallowed','I have a pet or I am not against keeping pets at home.'),('petsarenotallowed',"I don't have a pet and I don't want any pets in my house."))
+    SMOKE=(("smokingisallowed","I smoke or I am not against smoking in the home."),("smokingisnotallowed" , "I don't smoke and I don't want smoking in my home."))
+    ALCHOOL=(("alchoolisallowed","I drink alcohol or I am not against alcohol consumption at home."),("alchoolisnotallowed","I do not drink alcohol and I do not want alcohol consumed in my home."))
+    HOME=(("hashome","I have a house and I am looking for a roommate for my house."),("nohome","I do not have a house, I am looking for a house and roommate."))
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
     image = models.ImageField(default='default.jpeg', upload_to='profile_pics')
+    name = models.CharField(max_length=100,null=True)
+    surname = models.CharField(max_length=100,null=True)
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=100,null=True)
+    age= models.CharField(max_length=50,null=True)
+    city= models.CharField(choices=CITIES, max_length=100,null=True)
+    cityofarival= models.CharField(max_length=100,null=True)
+    school= models.CharField(max_length=100,null=True)
+    department= models.CharField(max_length=100,null=True)
+    pets= models.CharField(choices=PETS, max_length=100,null=True)
+    smoke= models.CharField(choices=SMOKE, max_length=100,null=True)
+    alchool= models.CharField(choices=ALCHOOL, max_length=100,null=True)
+    home=models.CharField(choices=HOME, max_length=100,null=True)
+    
 
 
     def __str__(self):
