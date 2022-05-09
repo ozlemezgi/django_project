@@ -11,7 +11,7 @@ from django.views.generic import (
                                 
 
 )
-from .models import Post
+from .models import Post,Like
 from .forms import PostForm
 from django.http import HttpResponseRedirect
 
@@ -45,6 +45,20 @@ class UserPostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView,self).get_context_data(**kwargs)
+        p = Post.objects.get(id=self.kwargs['pk'])
+        number_of_likes = p.like_set.all().count()
+        print(number_of_likes)
+        #total_likes=p.total_likes()
+        #context["total_likes"]= total_likes
+        context["number_of_likes"]= number_of_likes
+        return context
+
+    
+       #p = Post.objects.get(id=pk)
+       #number_of_likes = p.like_set.all().count()
+
 
 @login_required(login_url='/login/')
 def postCreate(request):
@@ -108,3 +122,26 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html',{'title':'About'})
+
+
+
+
+
+
+
+def like(request, pk):
+    p = Post.objects.get(id=pk)
+    number_of_likes = p.like_set.all().count()
+    new_like, created = Like.objects.get_or_create(user=request.user, post_id=pk)
+    if not created:
+        print("not created")
+        return HttpResponseRedirect(reverse('blog:blog-home-post', args=(pk,)))
+    else:
+        
+        print("All Created")
+        return HttpResponseRedirect(reverse('blog:blog-home-post', args=(pk,)))
+       
+
+def showLikes(request):
+    p = Post.objects.get(...)
+    number_of_likes = p.like_set.all().count()

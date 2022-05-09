@@ -6,7 +6,17 @@
         <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="{% url 'blog:user-posts' object.author.username %}">{{ object.author }}</a>
-                <small class="text-muted">{{ object.date_posted|date:"j F y" }}</small>
+                <small class="text-muted">{{object.date_posted|date:"j F y" }}</small>
+		{% if object.author != user %}
+               <form action = "{% url 'blog:like' object.pk %}"
+              
+               method="POST">
+                   {% csrf_token %}
+                   <button type ='submit',name="post_id",value="{{object.pk}}",class="btn btn-primary  btn-sm">Like </button> - {{ number_of_likes}} Likes
+          
+          
+               </form>
+               {% endif %}
                 {% if object.author == user %}
                 <div>
                 <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'blog:post-update' object.pk %}">Update</a>
@@ -18,5 +28,9 @@
             <p class="article-content">{{ object.content }}</p>
         </div>
     </article>
+
+
+
+    
 
 {% endblock content %}

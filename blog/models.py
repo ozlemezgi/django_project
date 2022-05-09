@@ -14,4 +14,13 @@ class Post(models.Model):
         return self.title
 
   #  def get_absolute_url(self):
-  #      return reverse("blog:blog-home-post",kwargs={"pk":self.pk})    
+  #      return reverse("blog:blog-home-post",kwargs={"pk":self.pk})
+
+
+
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
