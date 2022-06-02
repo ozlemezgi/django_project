@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-
+from users.models import Profile
 from django.views.generic import (
                                 ListView ,
                                 DetailView ,
@@ -11,7 +11,7 @@ from django.views.generic import (
                                 
 
 )
-from .models import Post,Like
+from .models import Post,Like,Comment
 from .forms import PostForm
 from django.http import HttpResponseRedirect
 
@@ -53,6 +53,8 @@ class PostDetailView(DetailView):
         #total_likes=p.total_likes()
         #context["total_likes"]= total_likes
         context["number_of_likes"]= number_of_likes
+        comments = p.comments.all()
+        context["comments"]= comments
         return context
 
     
@@ -78,6 +80,18 @@ def postCreate(request):
         #return reverse('blog:blog-home-post', args=(post.id,))
     return render(request,"blog/post_form.html",{"postForm":postForm})
 
+@login_required(login_url='/login/')
+def addComment(request,pk):
+    post = get_object_or_404(Post,id = pk)
+    profil = Profile.objects.get(user=request.user)
+    if request.method == "POST":
+    
+        comment_content = request.POST.get("comment_content")
+        newComment = Comment(comment_author = profil, comment_content = comment_content)
+       # newComment.rate=rate
+        newComment.post = post
+        newComment.save()
+    return redirect(reverse("blog:blog-home-post",kwargs={"pk":pk}))
 
 
 

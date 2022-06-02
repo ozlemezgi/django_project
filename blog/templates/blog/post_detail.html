@@ -26,7 +26,65 @@
             </div>
             <h2 class="article-title">{{ object.title }}</h2>
             <p class="article-content">{{ object.content }}</p>
+
+
+
+	<h4>Comments</h4>
+  <hr>
+  {% if comments %}
+  {% for comment in comments %}
+  {% if user.is_authenticated %}
+  <div class="media mb-4">
+              <div class="media-body" style="with: 15px;">
+      <h5 style="color: rgb(165, 165, 240);display: inline;">
+          {{comment.comment_author}} 
+      {% if request.user.id == comment.comment_author.user_id %}
+       <!--> <a href="{% url 'blog:comment_remove' comment.id
+      %}" style="float:right">&#9747;</a> -->
+      {% endif %}
+      </h5>
+       <p style="color:rgb(69, 68, 68);display: inline;"><small>{{comment.comment_date}}</small></p>
+
+     <br>
+     <p>{{comment.comment_content|linebreaks}}</p>
+   
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+  {% else %}
+  <div class = "alert alert-success">
+    There is no comment : (   Make the first comment!
+  </div>
+  {% endif %}
+
+
+  <div class="card my-4">
+    <h5 class="card-header">Leave a Comment:</h5>
+    <div class="card-body">
+      <form method = "POST" action = "{% url 'blog:comment' object.pk %}">
+      {% csrf_token %}
+        <div class="form-group">
+        <!--<label for="formGroupExampleInput">Comment</label> -->
+          <textarea name = "comment_content" class="form-control" rows="3"></textarea>
+    
+<br>
+        
+        <button type="submit" class="btn btn-danger">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
         </div>
+
+
+
+
+	
     </article>
 
 

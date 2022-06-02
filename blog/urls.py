@@ -18,6 +18,7 @@ urlpatterns = [
     path('post_form/',views.postCreate ,name='post-create'),
     path('about/', views.about,name='blog-about'),
     path('post/likes/<int:pk>/',views.like,name='like'),
+    path('comment/<int:pk>',views.addComment,name = "comment"),
 ]
 
 
