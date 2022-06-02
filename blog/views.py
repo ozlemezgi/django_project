@@ -95,6 +95,14 @@ def addComment(request,pk):
 
 
 
+def commentRemove(request,pk):
+    comment = get_object_or_404(Comment, id=pk)
+    if request.user.id == comment.comment_author.user_id:
+        comment.delete()
+
+    return redirect('blog:blog-home-post', pk=comment.post.pk)
+
+
 #class PostCreateView(CreateView):
    #model = Post
    #fields = ['title','content']

@@ -19,6 +19,7 @@ urlpatterns = [
     path('about/', views.about,name='blog-about'),
     path('post/likes/<int:pk>/',views.like,name='like'),
     path('comment/<int:pk>',views.addComment,name = "comment"),
+    path('comment/<int:pk>/remove/',views.commentRemove,name = "comment_remove")
 ]
 
 
