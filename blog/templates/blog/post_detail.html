@@ -12,7 +12,7 @@
               
                method="POST">
                    {% csrf_token %}
-                   <button type ='submit',name="post_id",value="{{object.pk}}",class="btn btn-primary  btn-sm">Like </button> - {{ number_of_likes}} Likes
+                   <button type ='submit',name="post_id",value="{{object.pk}}",class="btn btn-danger">Like </button> - {{ number_of_likes}} Likes
           
           
                </form>
@@ -88,7 +88,7 @@
 <article>
 <main role="main" class="container">
         <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-16">
           {% if messages %}
             {% for message in messages %}
               <div class='alert alert-{{message.tags}}'>
@@ -99,24 +99,24 @@
           {% endif %}
 
         </div>
-        <div class="col-md-4">
+       <div class="col-md-16">  
             <div class="content-section">
-            <h3>Our Sidebar</h3>
-            <p class='text-muted'>You can put any information here you'd like.
+            <h3>Information about {{ object.author.username }} </h3>
+            <p class='text-muted'>You can see information about the advertiser here.
                 <ul class="list-group">
                 <li class="list-group-item
                 list-group-item-light"><b>Name:</b> {{object.author.profile.name}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.surname}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.gender}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.age}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.city}}</li>
-		<li class="list-group-item list-group-item-light">{{object.author.profile.cityofarival}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.school}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.department}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.pets}}</li>
-		<li class="list-group-item list-group-item-light">{{object.author.profile.smoke}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.alchool}}</li>
-                <li class="list-group-item list-group-item-light">{{object.author.profile.home}}</li>
+                <li class="list-group-item list-group-item-light"><b>Name: </b>{{object.author.profile.surname}}</li>
+                <li class="list-group-item list-group-item-light"><b>Surname: </b>{{object.author.profile.gender}}</li>
+                <li class="list-group-item list-group-item-light"><b>Age: </b>{{object.author.profile.age}}</li>
+                <li class="list-group-item list-group-item-light"><b>City: </b>{{object.author.profile.city}}</li>
+		<li class="list-group-item list-group-item-light"><b>City of arival: </b>{{object.author.profile.cityofarival}}</li>
+                <li class="list-group-item list-group-item-light"><b>School: </b>{{object.author.profile.school}}</li>
+                <li class="list-group-item list-group-item-light"><b>Department: </b>{{object.author.profile.department}}</li>
+                <li class="list-group-item list-group-item-light"><b>Pets: </b>{{object.author.profile.pets}}</li>
+		<li class="list-group-item list-group-item-light"><b>Smoking Cigarettes: </b>{{object.author.profile.smoke}}</li>
+                <li class="list-group-item list-group-item-light"><b>Drinking alchool: </b>{{object.author.profile.alchool}}</li>
+                <li class="list-group-item list-group-item-light"><b>Home situation: </b>{{object.author.profile.home}}</li>
 		</ul>
             </p>
             </div>
